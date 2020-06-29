@@ -1,0 +1,28 @@
+name: vrc-update-api
+
+on:
+  repository_dispatch: 
+    types: [test_trigger]
+  schedule:
+      # JST: 0 0 * * *  (UTC+9)
+      # UTC: 0 15 * * *
+    - cron: '50 14 * * *'
+
+jobs:
+  update-image:
+    name: update images
+    runs-on: ubuntu-latest
+    steps:
+      - name: mkdir
+        run: mkdir -p public/api/v1/vrc-calendar
+      - name: date
+        run: date > public/api/v1/vrc-calendar/update
+      - name: wget
+        run: wget -T 10 "http://drive.google.com/uc?export=view&id=${{ secrets.API_ENDPOINT_VRC_CALENDAR }}" -O public/api/v1/vrc-calendar/calendar-v1.png
+      - name: deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PUBLISH_DIR: public
+          PUBLISH_BRANCH: master 
+          KEEP_FILES: true

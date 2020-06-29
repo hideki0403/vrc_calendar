@@ -1,4 +1,4 @@
-# vrc_calender
+# vrc_calendar
 VRC_Panorama用の日めくりカレンダー
 
 ## kwsk
